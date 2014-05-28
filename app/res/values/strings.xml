@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">rasp-home</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="connect">connect</string>
+    <string name="ip">192.168.0.111</string>
+    <string name="internet">internet</string>
+    <string name="verbindungsfehler">Verbindungsfehler</string>
+    <string name="set">Set</string>
+
+</resources>
