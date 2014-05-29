@@ -2,15 +2,22 @@
 
 import socket               # Import socket module
 
-s = socket.socket()         # Create a socket object
-#host = 'mylilraspi.raspctl.com'
-host = '192.168.0.111'
-port = 1892                # Reserve a port for your service.
-s.bind((host, port))        # Bind to the port
+def main():
+	HOST = '192.168.0.111'                 # Symbolic name meaning all available interfaces
+	PORT = 1892 		               # Arbitrary non-privileged port
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s.bind((HOST, PORT))
+	s.listen(1)
+	while True:
+		conn, addr = s.accept()
+		print 'Connected by', addr
+		while True:
+		    	data = conn.recv(1024)
+    			if not data: break
+			print data
+    			conn.sendall(data)
+	conn.close()
 
-s.listen(5)                 # Now wait for client connection.
-while True:
-   c, addr = s.accept()     # Establish connection with client.
-   print 'Got connection from', addr
-   c.send('Thank you for connecting')
-   c.close()                # Close the connection
+if __name__ == "__main__":
+	main()
+

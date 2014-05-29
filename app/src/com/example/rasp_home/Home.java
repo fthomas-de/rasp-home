@@ -3,6 +3,7 @@ package com.example.rasp_home;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -11,14 +12,17 @@ import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class Home extends Activity {
 
-	Button connect;
-	Button set;
+	ImageButton dose1;
+	ImageButton dose2;
+	ImageButton dose3;
+	ImageButton set;
+	ImageButton restart;
 	
 	String DEFAULT_ADDRESS = "mylilraspi.raspctl.com";
 	String address = "mylilraspi.raspctl.com";
@@ -30,19 +34,45 @@ public class Home extends Activity {
 		setContentView(R.layout.activity_home);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-		connect = (Button) findViewById(R.id.connect);
-		connect.setOnClickListener(connect_handler);
+		dose1 = (ImageButton) findViewById(R.id.dose1);
+		dose1.setOnClickListener(dose1_handler);
 		
-		set = (Button) findViewById(R.id.set);
+		dose2 = (ImageButton) findViewById(R.id.dose2);
+		dose2.setOnClickListener(dose2_handler);
+		
+		dose3 = (ImageButton) findViewById(R.id.dose3);
+		dose3.setOnClickListener(dose3_handler);
+		
+		set = (ImageButton) findViewById(R.id.set);
 		set.setOnClickListener(set_handler);
+		
+		restart = (ImageButton) findViewById(R.id.restart);
+		restart.setOnClickListener(restart_handler);
+		
 
 	}
 
-	View.OnClickListener connect_handler = new View.OnClickListener() {
+	View.OnClickListener dose1_handler = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			AsyncTaskRunner runner = new AsyncTaskRunner();
-			runner.execute();
+			runner.execute("000");
+		}
+	};
+	
+	View.OnClickListener dose2_handler = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			AsyncTaskRunner runner = new AsyncTaskRunner();
+			runner.execute("001");
+		}
+	};
+	
+	View.OnClickListener dose3_handler = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			AsyncTaskRunner runner = new AsyncTaskRunner();
+			runner.execute("010");
 		}
 	};
 	
@@ -58,6 +88,14 @@ public class Home extends Activity {
 		
 	};
 	
+	View.OnClickListener restart_handler = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			AsyncTaskRunner runner = new AsyncTaskRunner();
+			runner.execute("111");
+		}
+	};
+	
 	private void showToast(String msg) {
 		Toast.makeText(getApplicationContext(), msg,
 				Toast.LENGTH_SHORT).show();
@@ -68,19 +106,25 @@ public class Home extends Activity {
 		protected String doInBackground(String... params) {
 			String res;
 			try {
-				String modifiedSentence;
-				Socket clientSocket;
-				clientSocket = new Socket(address, port);
-
+				String read_msg;
+				Socket socket;
+				socket = new Socket(address, port);
+								
+				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+				out.println(params[0]);
+		        out.flush();
+		        
 				BufferedReader inFromServer = new BufferedReader(
-						new InputStreamReader(clientSocket.getInputStream()));
+						new InputStreamReader(socket.getInputStream()));
 				if (inFromServer.equals("")) {
 					System.out.println("empty");
 				}
-				modifiedSentence = inFromServer.readLine();
+				read_msg = inFromServer.readLine();
 
-				System.out.println("FROM SERVER: >" + modifiedSentence + "<");
-				clientSocket.close();
+				System.out.println("FROM SERVER: '" + read_msg + "'");
+				
+				socket.close();
+				
 				res = "Success";
 			} catch (UnknownHostException e) {
 				System.out.println("UnknownHostException");

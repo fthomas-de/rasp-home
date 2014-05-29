@@ -8,5 +8,9 @@
     <string name="internet">internet</string>
     <string name="verbindungsfehler">Verbindungsfehler</string>
     <string name="set">Set</string>
+    <string name="eins">Dose1</string>
+    <string name="zwei">Dose2</string>
+    <string name="drei">Dose3</string>
+    <string name="shutdown">shutdown</string>
 
 </resources>

@@ -3,54 +3,106 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#81DAF5"
+    android:background="#F5DA81"
     android:columnCount="1"
+    android:contentDescription="@string/drei"
     tools:context="${packageName}.${activityClass}" >
 
     <EditText
         android:id="@+id/ipaddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/connect"
-        android:layout_marginTop="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
         android:ems="10"
         android:hint="@string/ip"
-        android:inputType="text" />
+        android:inputType="text" >
 
-    <Button
+        <requestFocus />
+    </EditText>
+
+    <ImageButton
+        android:id="@+id/dose2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ipaddress"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/stecker"
+        android:contentDescription="@string/zwei"
+        android:src="@drawable/stecker" />
+
+    <ImageButton
+        android:id="@+id/dose3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/ipaddress"
+        android:layout_alignTop="@+id/dose2"
+        android:background="@drawable/stecker"
+        android:contentDescription="@string/drei"
+        android:src="@drawable/stecker" />
+
+    <ImageButton
+        android:id="@+id/dose1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ipaddress"
+        android:layout_alignTop="@+id/dose2"
+        android:background="@drawable/stecker"
+        android:contentDescription="@string/eins"
+        android:src="@drawable/stecker" />
+
+    <TextView
+        android:id="@+id/dose1_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dose1"
+        android:layout_below="@+id/dose1"
+        android:contentDescription="@string/eins"
+        android:text="@string/eins"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/dose2_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/dose1_label"
+        android:layout_alignBottom="@+id/dose1_label"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/zwei"
+        android:text="@string/zwei"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ImageButton
         android:id="@+id/set"
-        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/ipaddress"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:text="@string/set" />
-
-    <Button
-        android:id="@+id/connect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="29dp"
-        android:text="@string/connect" />
-
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/ipaddress"
+        android:background="@drawable/pfeil"
+        android:contentDescription="@string/set"
         android:src="@drawable/pfeil" />
 
-    <ImageButton
-        android:id="@+id/imageButton2"
+    <TextView
+        android:id="@+id/dose3_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageButton1"
+        android:layout_alignBaseline="@+id/dose2_label"
+        android:layout_alignBottom="@+id/dose2_label"
+        android:layout_alignLeft="@+id/dose3"
+        android:text="@string/drei"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ImageButton
+        android:id="@+id/restart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="82dp"
-        android:src="@drawable/stecker" />
+        android:layout_marginBottom="39dp"
+        android:background="@drawable/shutdown"
+        android:contentDescription="@string/shutdown"
+        android:src="@drawable/shutdown" />
 
 </RelativeLayout>
