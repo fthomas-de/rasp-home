@@ -14,15 +14,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Home extends Activity {
 
-	ImageButton dose1;
-	ImageButton dose2;
-	ImageButton dose3;
-	ImageButton set;
-	ImageButton restart;
+	private ImageButton dose1;
+	private ImageButton dose2;
+	private ImageButton dose3;
+	private ImageButton set;
+	private ImageButton restart;
+	private ImageButton refresh;
+	private TextView status;
 	
 	String DEFAULT_ADDRESS = "mylilraspi.raspctl.com";
 	String address = "mylilraspi.raspctl.com";
@@ -46,10 +49,13 @@ public class Home extends Activity {
 		set = (ImageButton) findViewById(R.id.set);
 		set.setOnClickListener(set_handler);
 		
+		refresh = (ImageButton) findViewById(R.id.refresh);
+		refresh.setOnClickListener(refresh_handler);
+		
 		restart = (ImageButton) findViewById(R.id.restart);
 		restart.setOnClickListener(restart_handler);
-		
 
+		status = (TextView) findViewById(R.id.status);
 	}
 
 	View.OnClickListener dose1_handler = new View.OnClickListener() {
@@ -86,6 +92,14 @@ public class Home extends Activity {
 			showToast(address);
 		}
 		
+	};
+	
+	View.OnClickListener refresh_handler = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			AsyncTaskRunner runner = new AsyncTaskRunner();
+			runner.execute("101");
+		}
 	};
 	
 	View.OnClickListener restart_handler = new View.OnClickListener() {
@@ -125,19 +139,38 @@ public class Home extends Activity {
 				
 				socket.close();
 				
-				res = "Success";
+				res = params[0];
 			} catch (UnknownHostException e) {
 				System.out.println("UnknownHostException");
-				res = "Error";
+				if(params[0].equals("101")){
+					res = "101_Error";
+				} else {
+					res = "Error";
+				}
 			} catch (IOException e) {
 				System.out.println("IOException");
-				res = "Error";
+				if(params[0].equals("101")){
+					res = "101_Error";
+				} else {
+					res = "Error";
+				}
 			}
 			return res;
 		}
 
 		protected void onPostExecute(String result) {
-			showToast(result);
+			if(!result.equals("101") && !result.equals("101_Error")){
+				System.out.println(result);
+				showToast("Success");
+			} else {
+				if(result.equals("101_Error")){
+					status.setText("Offline");
+				} else {
+					status.setText("Online");
+				}
+			}
 		}
 	}
 }
+
+

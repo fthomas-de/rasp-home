@@ -53,27 +53,6 @@
         android:contentDescription="@string/eins"
         android:src="@drawable/stecker" />
 
-    <TextView
-        android:id="@+id/dose1_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/dose1"
-        android:layout_below="@+id/dose1"
-        android:contentDescription="@string/eins"
-        android:text="@string/eins"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/dose2_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/dose1_label"
-        android:layout_alignBottom="@+id/dose1_label"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="@string/zwei"
-        android:text="@string/zwei"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
     <ImageButton
         android:id="@+id/set"
         android:layout_width="wrap_content"
@@ -83,16 +62,6 @@
         android:background="@drawable/pfeil"
         android:contentDescription="@string/set"
         android:src="@drawable/pfeil" />
-
-    <TextView
-        android:id="@+id/dose3_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/dose2_label"
-        android:layout_alignBottom="@+id/dose2_label"
-        android:layout_alignLeft="@+id/dose3"
-        android:text="@string/drei"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <ImageButton
         android:id="@+id/restart"
@@ -104,5 +73,55 @@
         android:background="@drawable/shutdown"
         android:contentDescription="@string/shutdown"
         android:src="@drawable/shutdown" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView1"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignRight="@+id/dose2"
+        android:text="@string/zwei"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/dose1"
+        android:layout_below="@+id/dose1"
+        android:text="@string/eins"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/dose3"
+        android:layout_below="@+id/dose3"
+        android:layout_marginRight="9dp"
+        android:text="@string/drei"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/restart"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="23dp"
+        android:paddingRight="10dp"
+        android:text="@string/offline"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageButton
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/status"
+        android:layout_toRightOf="@+id/status"
+        android:background="@drawable/refresh"
+        android:contentDescription="@string/refresh"
+        android:src="@drawable/refresh" />
 
 </RelativeLayout>
