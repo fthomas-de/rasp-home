@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import android.app.Activity;
@@ -122,8 +125,16 @@ public class Home extends Activity {
 			try {
 				String read_msg;
 				Socket socket;
-				socket = new Socket(address, port);
-								
+				socket = new Socket();
+				
+				SocketAddress sockaddr = new InetSocketAddress(address, port);
+				
+				try{
+					socket.connect(sockaddr, 500);
+				} catch (SocketTimeoutException e){
+					
+				}
+				
 				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 				out.println(params[0]);
 		        out.flush();
@@ -159,11 +170,11 @@ public class Home extends Activity {
 		}
 
 		protected void onPostExecute(String result) {
-			if(!result.equals("101") && !result.equals("101_Error")){
+			if(!result.equals("101") && !result.equals("101_Error") && !result.equals("Error")){
 				System.out.println(result);
 				showToast("Success");
 			} else {
-				if(result.equals("101_Error")){
+				if(result.equals("101_Error") || result.equals("Error")){
 					status.setText("Offline");
 				} else {
 					status.setText("Online");
