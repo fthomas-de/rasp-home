@@ -9,17 +9,17 @@ package com.example.rasp_home;
 
 public final class R {
     public static final class attr {
-        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-         */
-        public static final int metaButtonBarButtonStyle=0x7f010001;
-        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-         */
-        public static final int metaButtonBarStyle=0x7f010000;
     }
-    public static final class color {
-        public static final int black_overlay=0x7f040000;
+    public static final class dimen {
+        /**  Default screen margins, per the Android Design guidelines. 
+
+         Example customization of dimensions originally defined in res/values/dimens.xml
+         (such as screen margins) for screens with more than 820dp of available width. This
+         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
+    
+         */
+        public static final int activity_horizontal_margin=0x7f040000;
+        public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
@@ -29,37 +29,50 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int stecker=0x7f020004;
     }
     public static final class id {
-        public static final int RelativeLayout1=0x7f070000;
-        public static final int dose1=0x7f070004;
-        public static final int dose2=0x7f070002;
-        public static final int dose3=0x7f070003;
-        public static final int ipaddress=0x7f070001;
-        public static final int refresh=0x7f07000b;
-        public static final int restart=0x7f070006;
-        public static final int set=0x7f070005;
-        public static final int status=0x7f07000a;
-        public static final int textView1=0x7f070008;
-        public static final int textView2=0x7f070007;
-        public static final int textView3=0x7f070009;
+        public static final int action_settings=0x7f08000e;
+        public static final int d1=0x7f080009;
+        public static final int d2=0x7f08000a;
+        public static final int d3=0x7f08000b;
+        public static final int dose1=0x7f080005;
+        public static final int dose2=0x7f080003;
+        public static final int dose3=0x7f080004;
+        public static final int ipaddress=0x7f080001;
+        public static final int log1=0x7f08000c;
+        public static final int log2=0x7f08000d;
+        public static final int pager=0x7f080000;
+        public static final int refresh=0x7f080007;
+        public static final int restart=0x7f080006;
+        public static final int save_button=0x7f080002;
+        public static final int status=0x7f080008;
     }
     public static final class layout {
         public static final int activity_home=0x7f030000;
+        public static final int fragment_home=0x7f030001;
+        public static final int fragment_log1=0x7f030002;
+        public static final int fragment_log2=0x7f030003;
+    }
+    public static final class menu {
+        public static final int home=0x7f070000;
     }
     public static final class string {
+        public static final int action_settings=0x7f050004;
         public static final int app_name=0x7f050000;
-        public static final int connect=0x7f050002;
-        public static final int drei=0x7f050009;
-        public static final int eins=0x7f050007;
-        public static final int hello_world=0x7f050001;
-        public static final int internet=0x7f050004;
-        public static final int ip=0x7f050003;
+        public static final int d1=0x7f05000d;
+        public static final int d2=0x7f05000e;
+        public static final int d3=0x7f05000f;
+        public static final int dose1=0x7f050007;
+        public static final int dose2=0x7f050008;
+        public static final int dose3=0x7f050009;
+        public static final int ip_address=0x7f050005;
+        public static final int log1=0x7f050010;
+        public static final int log2=0x7f050011;
         public static final int offline=0x7f05000b;
-        public static final int online=0x7f05000c;
-        public static final int refresh=0x7f05000d;
-        public static final int set=0x7f050006;
-        public static final int shutdown=0x7f05000a;
-        public static final int verbindungsfehler=0x7f050005;
-        public static final int zwei=0x7f050008;
+        public static final int refresh=0x7f05000a;
+        public static final int restart=0x7f05000c;
+        public static final int save_button=0x7f050006;
+        public static final int title_section1=0x7f050001;
+        public static final int title_section2=0x7f050002;
+        public static final int title_section3=0x7f050003;
     }
     public static final class style {
         /** 
@@ -89,46 +102,4 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int AppTheme=0x7f060001;
     }
-    public static final class styleable {
-        /** 
-         Declare custom theme attributes that allow changing which styles are
-         used for button bars depending on the API level.
-         ?android:attr/buttonBarStyle is new as of API 11 so this is
-         necessary to support previous API levels.
-    
-           <p>Includes the following attributes:</p>
-           <table>
-           <colgroup align="left" />
-           <colgroup align="left" />
-           <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ButtonBarContainerTheme_metaButtonBarButtonStyle com.example.rasp_home:metaButtonBarButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #ButtonBarContainerTheme_metaButtonBarStyle com.example.rasp_home:metaButtonBarStyle}</code></td><td></td></tr>
-           </table>
-           @see #ButtonBarContainerTheme_metaButtonBarButtonStyle
-           @see #ButtonBarContainerTheme_metaButtonBarStyle
-         */
-        public static final int[] ButtonBarContainerTheme = {
-            0x7f010000, 0x7f010001
-        };
-        /**
-          <p>This symbol is the offset where the {@link com.example.rasp_home.R.attr#metaButtonBarButtonStyle}
-          attribute's value can be found in the {@link #ButtonBarContainerTheme} array.
-
-
-          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.example.rasp_home:metaButtonBarButtonStyle
-        */
-        public static final int ButtonBarContainerTheme_metaButtonBarButtonStyle = 1;
-        /**
-          <p>This symbol is the offset where the {@link com.example.rasp_home.R.attr#metaButtonBarStyle}
-          attribute's value can be found in the {@link #ButtonBarContainerTheme} array.
-
-
-          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.example.rasp_home:metaButtonBarStyle
-        */
-        public static final int ButtonBarContainerTheme_metaButtonBarStyle = 0;
-    };
 }
