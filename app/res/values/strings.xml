@@ -3,8 +3,8 @@
 
     <string name="app_name">rasp-home</string>
     <string name="title_section1">Home</string>
-    <string name="title_section2">Log1</string>
-    <string name="title_section3">Log2</string>
+    <string name="title_section2">Reboot</string>
+    <string name="title_section3">Shutdown</string>
     <string name="action_settings">Settings</string>
     <string name="ip_address">192.168.0.111</string>
     <string name="save_button">save_button</string>
@@ -17,7 +17,8 @@
     <string name="d1">dose1</string>
     <string name="d2">dose2</string>
     <string name="d3">dose3</string>
-    <string name="log1">log1</string>
-    <string name="log2">log2</string>
+    <string name="log1">Reboot</string>
+    <string name="log2">Shutdown</string>
+    <string name="IPaddress">IP Addresse</string>
 
 </resources>

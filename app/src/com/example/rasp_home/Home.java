@@ -365,7 +365,10 @@ public class Home extends Activity implements ActionBar.TabListener {
 
 		private String address = "mylilraspi.raspctl.com";
 		private static final int port = 1892;
-		private TextView status;
+		private TextView log1;
+		private String log_msg = "";
+		private Boolean running = false;
+		private final static int LOGLEN = 25; 
 		
 		/**
 		 * Returns a new instance of this fragment for the given section number.
@@ -384,16 +387,21 @@ public class Home extends Activity implements ActionBar.TabListener {
 			View rootView = inflater.inflate(R.layout.fragment_log1, container,
 					false);
 			
-			status = (TextView) rootView.findViewById(R.id.status);
+			log1 = (TextView) rootView.findViewById(R.id.log1);
 			
 			AsyncTaskRunner runner = new AsyncTaskRunner();
-			runner.execute("100");
+			if(!running) {
+				runner.execute("100");
+				running = true;
+			}
 			return rootView;
 		}
 		
-		private void showToast(String msg) {
-			Toast.makeText(getActivity(), msg,
-					Toast.LENGTH_SHORT).show();
+		@Override
+		public void onResume(){
+			System.out.println("log1 onresume");
+			running = false;
+			super.onResume();
 		}
 		
 		private class AsyncTaskRunner extends AsyncTask<String, String, String> {
@@ -428,11 +436,12 @@ public class Home extends Activity implements ActionBar.TabListener {
 					
 					String log1 = "";
 					
-					for(int i=0; i<9; i++){
+					for(int i=0; i<LOGLEN; i++){
 						log1 = log1 + inFromServer.readLine() + System.getProperty("line.separator");;		
 					}
 					log1 = log1 + inFromServer.readLine();
-					System.out.println("log1: " + log1);
+					//System.out.println("log1: " + log1);
+					log_msg = log1;
 					
 					System.out.println("FROM SERVER: '" + read_msg + "'");
 					
@@ -459,14 +468,8 @@ public class Home extends Activity implements ActionBar.TabListener {
 
 			protected void onPostExecute(String result) {
 				if(!result.equals("101") && !result.equals("101_Error") && !result.equals("Error")){
-					showToast("Success");
-				} else {
-					if(result.equals("101_Error") || result.equals("Error")){
-						status.setText("offline");
-					} else {
-						status.setText("online");
-					}
-				}
+					log1.setText(log_msg);
+				} 
 			}
 		}
 	}
@@ -476,6 +479,13 @@ public class Home extends Activity implements ActionBar.TabListener {
 	 */
 	public static class Log2Fragment extends Fragment {
 
+		private String address = "mylilraspi.raspctl.com";
+		private static final int port = 1892;
+		private TextView log2;
+		private String log_msg = "";
+		private Boolean running = false;
+		private final static int LOGLEN = 29; 
+		
 		/**
 		 * Returns a new instance of this fragment for the given section number.
 		 */
@@ -492,7 +502,92 @@ public class Home extends Activity implements ActionBar.TabListener {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_log2, container,
 					false);
+			
+			log2 = (TextView) rootView.findViewById(R.id.log2);
+			
+			AsyncTaskRunner runner = new AsyncTaskRunner();
+			System.out.println(running);
+			if(!running){
+				runner.execute("110");
+				running = true;
+			}
 			return rootView;
+		}
+		
+		@Override
+		public void onResume(){
+			System.out.println("log2 onresume");
+			running = false;
+			super.onResume();
+		}
+		
+		private class AsyncTaskRunner extends AsyncTask<String, String, String> {
+			@Override
+			protected String doInBackground(String... params) {
+				String res;
+				try {
+					String read_msg;
+					Socket socket;
+					socket = new Socket();
+					
+					SocketAddress sockaddr = new InetSocketAddress(address, port);
+					
+					try{
+						socket.connect(sockaddr, 500);
+					} catch (SocketTimeoutException e){
+						
+					}
+					
+					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+					out.println(params[0]);
+			        out.flush();
+			        
+					BufferedReader inFromServer = new BufferedReader(
+							new InputStreamReader(socket.getInputStream()));
+					if (inFromServer.equals("")) {
+						System.out.println("empty");
+					}
+					
+					
+					read_msg = inFromServer.readLine();
+					
+					String log2 = "";
+					
+					for(int i=0; i<LOGLEN; i++){
+						log2 = log2 + inFromServer.readLine() + System.getProperty("line.separator");;		
+					}
+					log2 = log2 + inFromServer.readLine();
+					//System.out.println("log2: " + log2);
+					log_msg = log2;
+					
+					System.out.println("FROM SERVER: '" + read_msg + "'");
+					
+					socket.close();
+					
+					res = params[0];
+				} catch (UnknownHostException e) {
+					System.out.println("UnknownHostException");
+					if(params[0].equals("101")){
+						res = "101_Error";
+					} else {
+						res = "Error";
+					}
+				} catch (IOException e) {
+					System.out.println("IOException");
+					if(params[0].equals("101")){
+						res = "101_Error";
+					} else {
+						res = "Error";
+					}
+				}
+				return res;
+			}
+
+			protected void onPostExecute(String result) {
+				if(!result.equals("101") && !result.equals("101_Error") && !result.equals("Error")){
+					log2.setText(log_msg);
+				} 
+			}
 		}
 	}
 

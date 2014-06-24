@@ -86,17 +86,6 @@
         android:src="@drawable/refresh" />
 
     <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/restart"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="61dp"
-        android:hint="@string/offline"
-        android:text="@string/offline"
-        android:textSize="20sp" />
-
-    <TextView
         android:id="@+id/d1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -122,5 +111,24 @@
         android:layout_below="@+id/dose3"
         android:layout_marginLeft="7dp"
         android:text="@string/d3" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ipaddress"
+        android:layout_below="@+id/ipaddress"
+        android:text="@string/IPaddress" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/restart"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="28dp"
+        android:hint="@string/offline"
+        android:text="@string/offline"
+        android:textSize="20sp" />
 
 </RelativeLayout>
