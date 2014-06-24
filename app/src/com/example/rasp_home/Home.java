@@ -426,8 +426,13 @@ public class Home extends Activity implements ActionBar.TabListener {
 					
 					read_msg = inFromServer.readLine();
 					
-					String log1 = inFromServer.readLine();
-					System.out.println(log1);
+					String log1 = "";
+					
+					for(int i=0; i<9; i++){
+						log1 = log1 + inFromServer.readLine() + System.getProperty("line.separator");;		
+					}
+					log1 = log1 + inFromServer.readLine();
+					System.out.println("log1: " + log1);
 					
 					System.out.println("FROM SERVER: '" + read_msg + "'");
 					
@@ -454,7 +459,6 @@ public class Home extends Activity implements ActionBar.TabListener {
 
 			protected void onPostExecute(String result) {
 				if(!result.equals("101") && !result.equals("101_Error") && !result.equals("Error")){
-					System.out.println(result);
 					showToast("Success");
 				} else {
 					if(result.equals("101_Error") || result.equals("Error")){
