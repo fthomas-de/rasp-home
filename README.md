@@ -1,6 +1,6 @@
 private project using my raspberry pi
 
-app: controlling some wlan plugs
+app: controlling düwi plugs
 
 - 433Mhz RF Wireless Transmitter-Receiver-Modul
 - düwi plug sockets
