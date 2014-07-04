@@ -19,7 +19,7 @@
         android:layout_marginTop="52dp"
         android:ems="10"
         android:hint="@string/ip_address"
-        android:inputType="number" />
+        android:inputType="text|number" />
 
     <ImageButton
         android:id="@+id/save_button"
