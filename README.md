@@ -1,4 +1,4 @@
-private project using my raspberry pi
+private project using my raspberry pi and my smartphone
 
 app: controlling düwi plugs
 
