@@ -53,21 +53,14 @@ public class Home extends Activity implements ActionBar.TabListener {
 		setContentView(R.layout.activity_home);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the activity.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
-		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
 		mViewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -76,12 +69,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 					}
 				});
 
-		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
 			actionBar.addTab(actionBar.newTab()
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
@@ -91,16 +79,12 @@ public class Home extends Activity implements ActionBar.TabListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.home, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
@@ -111,8 +95,6 @@ public class Home extends Activity implements ActionBar.TabListener {
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
 
@@ -138,9 +120,6 @@ public class Home extends Activity implements ActionBar.TabListener {
 
 		@Override
 		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a PlaceholderFragment (defined as a static inner class
-			// below).
 			Fragment fragment = null;
 			switch(position){
 				case 0:		
@@ -158,7 +137,6 @@ public class Home extends Activity implements ActionBar.TabListener {
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
 			return 3;
 		}
 
@@ -291,12 +269,14 @@ public class Home extends Activity implements ActionBar.TabListener {
 			Toast.makeText(getActivity(), msg,
 					Toast.LENGTH_SHORT).show();
 		}
-
+		
 		private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 			@Override
 			protected String doInBackground(String... params) {
 				String res;
 				try {
+					System.out.println("Initializing: " + params[0]);
+					
 					String read_msg;
 					Socket socket;
 					socket = new Socket();
@@ -320,7 +300,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 					}
 					read_msg = inFromServer.readLine();
 
-					System.out.println("FROM SERVER: '" + read_msg + "'");
+					System.out.println("Server: '" + read_msg + "'");
 					
 					socket.close();
 					
@@ -367,8 +347,8 @@ public class Home extends Activity implements ActionBar.TabListener {
 		private static final int port = 1892;
 		private TextView log1;
 		private String log_msg = "";
-		private Boolean running = false;
 		private final static int LOGLEN = 25; 
+		private ImageButton refreshLog1;
 		
 		/**
 		 * Returns a new instance of this fragment for the given section number.
@@ -389,26 +369,33 @@ public class Home extends Activity implements ActionBar.TabListener {
 			
 			log1 = (TextView) rootView.findViewById(R.id.log1);
 			
+			refreshLog1 = (ImageButton) rootView.findViewById(R.id.refreshLog1);
+			refreshLog1.setOnClickListener(refreshLog1_handler);
+			
 			AsyncTaskRunner runner = new AsyncTaskRunner();
-			if(!running) {
-				runner.execute("100");
-				running = true;
-			}
+			runner.execute("100");
 			return rootView;
 		}
 		
 		@Override
 		public void onResume(){
-			System.out.println("log1 onresume");
-			running = false;
 			super.onResume();
 		}
+		
+		View.OnClickListener refreshLog1_handler = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncTaskRunner runner = new AsyncTaskRunner();
+				runner.execute("100");
+			}
+		};
 		
 		private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 			@Override
 			protected String doInBackground(String... params) {
 				String res;
 				try {
+					System.out.println("Initializing: " + params[0]);
 					String read_msg;
 					Socket socket;
 					socket = new Socket();
@@ -440,10 +427,9 @@ public class Home extends Activity implements ActionBar.TabListener {
 						log1 = log1 + inFromServer.readLine() + System.getProperty("line.separator");;		
 					}
 					log1 = log1 + inFromServer.readLine();
-					//System.out.println("log1: " + log1);
 					log_msg = log1;
 					
-					System.out.println("FROM SERVER: '" + read_msg + "'");
+					System.out.println("Server: '" + read_msg + "'");
 					
 					socket.close();
 					
@@ -483,8 +469,8 @@ public class Home extends Activity implements ActionBar.TabListener {
 		private static final int port = 1892;
 		private TextView log2;
 		private String log_msg = "";
-		private Boolean running = false;
-		private final static int LOGLEN = 29; 
+		private final static int LOGLEN = 28;
+		private ImageButton refreshLog2;
 		
 		/**
 		 * Returns a new instance of this fragment for the given section number.
@@ -505,27 +491,33 @@ public class Home extends Activity implements ActionBar.TabListener {
 			
 			log2 = (TextView) rootView.findViewById(R.id.log2);
 			
+			refreshLog2 = (ImageButton) rootView.findViewById(R.id.refreshLog2);
+			refreshLog2.setOnClickListener(refreshLog2_handler);
+			
 			AsyncTaskRunner runner = new AsyncTaskRunner();
-			System.out.println(running);
-			if(!running){
-				runner.execute("110");
-				running = true;
-			}
+			runner.execute("110");
 			return rootView;
 		}
 		
 		@Override
 		public void onResume(){
-			System.out.println("log2 onresume");
-			running = false;
 			super.onResume();
 		}
+		
+		View.OnClickListener refreshLog2_handler = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncTaskRunner runner = new AsyncTaskRunner();
+				runner.execute("110");
+			}
+		};
 		
 		private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 			@Override
 			protected String doInBackground(String... params) {
 				String res;
 				try {
+					System.out.println("Initializing: " + params[0]);
 					String read_msg;
 					Socket socket;
 					socket = new Socket();
@@ -557,10 +549,9 @@ public class Home extends Activity implements ActionBar.TabListener {
 						log2 = log2 + inFromServer.readLine() + System.getProperty("line.separator");;		
 					}
 					log2 = log2 + inFromServer.readLine();
-					//System.out.println("log2: " + log2);
 					log_msg = log2;
 					
-					System.out.println("FROM SERVER: '" + read_msg + "'");
+					System.out.println("Server: '" + read_msg + "'");
 					
 					socket.close();
 					
