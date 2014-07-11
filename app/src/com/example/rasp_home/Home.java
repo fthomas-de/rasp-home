@@ -190,7 +190,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			rootView = inflater.inflate(R.layout.fragment_home, container,
 					false);
 			
-			dose1 = (ImageButton) rootView.findViewById(R.id.plug1);
+			dose1 = (ImageButton) rootView.findViewById(R.id.dose1);
 			dose1.setOnClickListener(dose1_handler);
 			
 			dose2 = (ImageButton) rootView.findViewById(R.id.dose2);

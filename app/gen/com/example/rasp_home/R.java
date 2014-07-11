@@ -34,13 +34,13 @@ public final class R {
         public static final int d1=0x7f080009;
         public static final int d2=0x7f08000a;
         public static final int d3=0x7f08000b;
+        public static final int dose1=0x7f080005;
         public static final int dose2=0x7f080003;
         public static final int dose3=0x7f080004;
         public static final int ipaddress=0x7f080001;
         public static final int log1=0x7f08000d;
         public static final int log2=0x7f080010;
         public static final int pager=0x7f080000;
-        public static final int plug1=0x7f080005;
         public static final int refresh=0x7f080007;
         public static final int refreshLog1=0x7f08000e;
         public static final int refreshLog2=0x7f080011;

@@ -55,7 +55,7 @@
         android:src="@drawable/stecker" />
 
     <ImageButton
-        android:id="@+id/plug1"
+        android:id="@+id/dose1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/dose2"
@@ -89,8 +89,8 @@
         android:id="@+id/d1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/plug1"
-        android:layout_below="@+id/plug1"
+        android:layout_alignLeft="@+id/dose1"
+        android:layout_below="@+id/dose1"
         android:layout_marginLeft="7dp"
         android:text="@string/d1" />
 
