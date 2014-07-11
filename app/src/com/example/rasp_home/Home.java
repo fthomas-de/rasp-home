@@ -50,8 +50,8 @@ public class Home extends Activity implements ActionBar.TabListener {
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-	
-	private String id_hash;
+
+	public static String id_hash;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +80,9 @@ public class Home extends Activity implements ActionBar.TabListener {
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
-		
-		TelephonyManager tManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+
+		TelephonyManager tManager = (TelephonyManager) this
+				.getSystemService(Context.TELEPHONY_SERVICE);
 		String id = tManager.getDeviceId();
 
 		MessageDigest md;
@@ -90,10 +91,11 @@ public class Home extends Activity implements ActionBar.TabListener {
 			md.update(id.getBytes());
 			byte byteData[] = md.digest();
 			StringBuffer sb = new StringBuffer();
-	        for (int i = 0; i < byteData.length; i++) {
-	         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-	         id_hash = sb.toString();
-	        }
+			for (int i = 0; i < byteData.length; i++) {
+				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16)
+						.substring(1));
+				id_hash = sb.toString();
+			}
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
@@ -144,17 +146,17 @@ public class Home extends Activity implements ActionBar.TabListener {
 		@Override
 		public Fragment getItem(int position) {
 			Fragment fragment = null;
-			switch(position){
-				case 0:		
-					fragment = HomeFragment.newInstance(position + 1);
-					break;
-				case 1:
-					fragment = Log1Fragment.newInstance(position + 1);
-					break;
-				case 2:
-					fragment = Log2Fragment.newInstance(position + 1);
-					break;
-					}
+			switch (position) {
+			case 0:
+				fragment = HomeFragment.newInstance(position + 1);
+				break;
+			case 1:
+				fragment = Log1Fragment.newInstance(position + 1);
+				break;
+			case 2:
+				fragment = Log2Fragment.newInstance(position + 1);
+				break;
+			}
 			return fragment;
 		}
 
@@ -185,7 +187,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 
 		private static final String DEFAULT_ADDRESS = "mylilraspi.raspctl.com";
 		private static final int PORT = 1892;
-		
+
 		private ImageButton plug1;
 		private ImageButton plug2;
 		private ImageButton plug3;
@@ -195,7 +197,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 		private TextView status;
 		private String address = "mylilraspi.raspctl.com";
 		private View rootView;
-		
+
 		/**
 		 * Returns a new instance of this fragment for the given section number.
 		 */
@@ -212,30 +214,37 @@ public class Home extends Activity implements ActionBar.TabListener {
 				Bundle savedInstanceState) {
 			rootView = inflater.inflate(R.layout.fragment_home, container,
 					false);
-			
+
 			plug1 = (ImageButton) rootView.findViewById(R.id.plug1);
 			plug1.setOnClickListener(plug1_handler);
-			
+
 			plug2 = (ImageButton) rootView.findViewById(R.id.plug2);
 			plug2.setOnClickListener(plug2_handler);
-			
+
 			plug3 = (ImageButton) rootView.findViewById(R.id.plug3);
 			plug3.setOnClickListener(plug3_handler);
-			
+
 			set = (ImageButton) rootView.findViewById(R.id.save_button);
 			set.setOnClickListener(set_handler);
-			
+
 			refresh = (ImageButton) rootView.findViewById(R.id.refresh);
 			refresh.setOnClickListener(refresh_handler);
-			
+
 			restart = (ImageButton) rootView.findViewById(R.id.restart);
 			restart.setOnClickListener(restart_handler);
 
 			status = (TextView) rootView.findViewById(R.id.status);
-			
+
 			return rootView;
 		}
 		
+		@Override
+		public void onResume() {
+			AsyncTaskRunner runner = new AsyncTaskRunner();
+			runner.execute("101");
+			super.onResume();
+		}
+
 		View.OnClickListener plug1_handler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -243,7 +252,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 				runner.execute("000");
 			}
 		};
-		
+
 		View.OnClickListener plug2_handler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -251,7 +260,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 				runner.execute("001");
 			}
 		};
-		
+
 		View.OnClickListener plug3_handler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -259,19 +268,21 @@ public class Home extends Activity implements ActionBar.TabListener {
 				runner.execute("010");
 			}
 		};
-		
+
 		View.OnClickListener set_handler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				address = ((EditText)rootView.findViewById(R.id.ipaddress)).getText().toString();	
-				if(address.equals("")) {
+				address = ((EditText) rootView.findViewById(R.id.ipaddress))
+						.getText().toString();
+				if (address.equals("")) {
 					address = DEFAULT_ADDRESS;
-				};
+				}
+				;
 				showToast(address);
 			}
-			
+
 		};
-		
+
 		View.OnClickListener refresh_handler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -279,7 +290,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 				runner.execute("101");
 			}
 		};
-		
+
 		View.OnClickListener restart_handler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -287,55 +298,54 @@ public class Home extends Activity implements ActionBar.TabListener {
 				runner.execute("111");
 			}
 		};
-		
+
 		private void showToast(String msg) {
-			Toast.makeText(getActivity(), msg,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
 		}
-		
+
 		private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 			@Override
 			protected String doInBackground(String... params) {
 				String res;
 				try {
-					System.out.println("Initializing: " + params[0]);
-					
 					String read_msg;
 					Socket socket;
 					socket = new Socket();
-					
-					SocketAddress sockaddr = new InetSocketAddress(address, PORT);
-					
-					try{
+
+					SocketAddress sockaddr = new InetSocketAddress(address,
+							PORT);
+
+					try {
 						socket.connect(sockaddr, 500);
-					} catch (SocketTimeoutException e){
-						
+					} catch (SocketTimeoutException e) {
+						System.out.println("Client: SocketTimeoutException");
 					}
-					
-					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-					out.println(params[0]);
-			        out.flush();
-			        
+
+					PrintWriter out = new PrintWriter(socket.getOutputStream(),
+							true);
+					out.println(params[0]+id_hash);
+					out.flush();
+
 					BufferedReader inFromServer = new BufferedReader(
 							new InputStreamReader(socket.getInputStream()));
 
 					read_msg = inFromServer.readLine();
 
 					System.out.println("Server: '" + read_msg + "'");
-					
+
 					socket.close();
-					
+
 					res = params[0];
 				} catch (UnknownHostException e) {
-					System.out.println("UnknownHostException");
-					if(params[0].equals("101")){
+					System.out.println("Client: UnknownHostException");
+					if (params[0].equals("101")) {
 						res = "101_Error";
 					} else {
 						res = "Error";
 					}
 				} catch (IOException e) {
-					System.out.println("IOException");
-					if(params[0].equals("101")){
+					System.out.println("Client: IOException");
+					if (params[0].equals("101")) {
 						res = "101_Error";
 					} else {
 						res = "Error";
@@ -345,11 +355,11 @@ public class Home extends Activity implements ActionBar.TabListener {
 			}
 
 			protected void onPostExecute(String result) {
-				if(!result.equals("101") && !result.equals("101_Error") && !result.equals("Error")){
-					System.out.println(result);
+				if (!result.equals("101") && !result.equals("101_Error")
+						&& !result.equals("Error")) {
 					showToast("Success");
 				} else {
-					if(result.equals("101_Error") || result.equals("Error")){
+					if (result.equals("101_Error") || result.equals("Error")) {
 						status.setText("offline");
 					} else {
 						status.setText("online");
@@ -364,14 +374,14 @@ public class Home extends Activity implements ActionBar.TabListener {
 	 */
 	public static class Log1Fragment extends Fragment {
 
-		private static final int LOGLEN = 25; 
+		private static final int LOGLEN = 25;
 		private static final int PORT = 1892;
-		
+
 		private String address = "mylilraspi.raspctl.com";
 		private TextView log1;
 		private String log_msg = "";
 		private ImageButton refreshLog1;
-		
+
 		/**
 		 * Returns a new instance of this fragment for the given section number.
 		 */
@@ -388,22 +398,22 @@ public class Home extends Activity implements ActionBar.TabListener {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_log1, container,
 					false);
-			
+
 			log1 = (TextView) rootView.findViewById(R.id.log1);
-			
+
 			refreshLog1 = (ImageButton) rootView.findViewById(R.id.refreshLog1);
 			refreshLog1.setOnClickListener(refreshLog1_handler);
-			
+
 			AsyncTaskRunner runner = new AsyncTaskRunner();
 			runner.execute("100");
 			return rootView;
 		}
-		
+
 		@Override
-		public void onResume(){
+		public void onResume() {
 			super.onResume();
 		}
-		
+
 		View.OnClickListener refreshLog1_handler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -411,57 +421,64 @@ public class Home extends Activity implements ActionBar.TabListener {
 				runner.execute("100");
 			}
 		};
+
+		private void showToast(String msg) {
+			Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+		}
 		
 		private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 			@Override
 			protected String doInBackground(String... params) {
 				String res;
 				try {
-					System.out.println("Initializing: " + params[0]);
 					String read_msg;
 					Socket socket;
 					socket = new Socket();
-					
-					SocketAddress sockaddr = new InetSocketAddress(address, PORT);
-					
-					try{
+
+					SocketAddress sockaddr = new InetSocketAddress(address,
+							PORT);
+
+					try {
 						socket.connect(sockaddr, 500);
-					} catch (SocketTimeoutException e){
-						
+					} catch (SocketTimeoutException e) {
+						System.out.println("Client: SocketTimeoutException");
 					}
-					
-					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-					out.println(params[0]);
-			        out.flush();
-			        
+
+					PrintWriter out = new PrintWriter(socket.getOutputStream(),
+							true);
+					out.println(params[0]+id_hash);
+					out.flush();
+
 					BufferedReader inFromServer = new BufferedReader(
 							new InputStreamReader(socket.getInputStream()));
-					
+
 					read_msg = inFromServer.readLine();
-					
+
 					String log1 = "";
-					
-					for(int i=0; i<LOGLEN; i++){
-						log1 = log1 + inFromServer.readLine() + System.getProperty("line.separator");;		
+
+					for (int i = 0; i < LOGLEN; i++) {
+						log1 = log1 + inFromServer.readLine()
+								+ System.getProperty("line.separator");
+						;
 					}
 					log1 = log1 + inFromServer.readLine();
 					log_msg = log1;
-					
+
 					System.out.println("Server: '" + read_msg + "'");
-					
+
 					socket.close();
-					
+
 					res = params[0];
 				} catch (UnknownHostException e) {
-					System.out.println("UnknownHostException");
-					if(params[0].equals("101")){
+					System.out.println("Client: UnknownHostException");
+					if (params[0].equals("101")) {
 						res = "101_Error";
 					} else {
 						res = "Error";
 					}
 				} catch (IOException e) {
-					System.out.println("IOException");
-					if(params[0].equals("101")){
+					System.out.println("Client: IOException");
+					if (params[0].equals("101")) {
 						res = "101_Error";
 					} else {
 						res = "Error";
@@ -471,13 +488,15 @@ public class Home extends Activity implements ActionBar.TabListener {
 			}
 
 			protected void onPostExecute(String result) {
-				if(!result.equals("101") && !result.equals("101_Error") && !result.equals("Error")){
+				if (!result.equals("101") && !result.equals("101_Error")
+						&& !result.equals("Error")) {
 					log1.setText(log_msg);
-				} 
+					showToast("Success");
+				}
 			}
 		}
 	}
-	
+
 	/**
 	 * A fragment containing the Log2 view.
 	 */
@@ -485,12 +504,12 @@ public class Home extends Activity implements ActionBar.TabListener {
 
 		private static final int PORT = 1892;
 		private final static int LOGLEN = 28;
-		
+
 		private String address = "mylilraspi.raspctl.com";
 		private TextView log2;
 		private String log_msg = "";
 		private ImageButton refreshLog2;
-		
+
 		/**
 		 * Returns a new instance of this fragment for the given section number.
 		 */
@@ -507,22 +526,22 @@ public class Home extends Activity implements ActionBar.TabListener {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_log2, container,
 					false);
-			
+
 			log2 = (TextView) rootView.findViewById(R.id.log2);
-			
+
 			refreshLog2 = (ImageButton) rootView.findViewById(R.id.refreshLog2);
 			refreshLog2.setOnClickListener(refreshLog2_handler);
-			
+
 			AsyncTaskRunner runner = new AsyncTaskRunner();
 			runner.execute("110");
 			return rootView;
 		}
-		
+
 		@Override
-		public void onResume(){
+		public void onResume() {
 			super.onResume();
 		}
-		
+
 		View.OnClickListener refreshLog2_handler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -531,56 +550,63 @@ public class Home extends Activity implements ActionBar.TabListener {
 			}
 		};
 		
+		private void showToast(String msg) {
+			Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+		}
+
 		private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 			@Override
 			protected String doInBackground(String... params) {
 				String res;
 				try {
-					System.out.println("Initializing: " + params[0]);
 					String read_msg;
 					Socket socket;
 					socket = new Socket();
-					
-					SocketAddress sockaddr = new InetSocketAddress(address, PORT);
-					
-					try{
+
+					SocketAddress sockaddr = new InetSocketAddress(address,
+							PORT);
+
+					try {
 						socket.connect(sockaddr, 500);
-					} catch (SocketTimeoutException e){
-						
+					} catch (SocketTimeoutException e) {
+						System.out.println("Client SocketTimeoutException");
 					}
-					
-					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-					out.println(params[0]);
-			        out.flush();
-			        
+
+					PrintWriter out = new PrintWriter(socket.getOutputStream(),
+							true);
+					out.println(params[0]+id_hash);
+					out.flush();
+
 					BufferedReader inFromServer = new BufferedReader(
 							new InputStreamReader(socket.getInputStream()));
-					
+
 					read_msg = inFromServer.readLine();
-					
+
 					String log2 = "";
-					
-					for(int i=0; i<LOGLEN; i++){
-						log2 = log2 + inFromServer.readLine() + System.getProperty("line.separator");;		
+
+					for (int i = 0; i < LOGLEN; i++) {
+						log2 = log2 + inFromServer.readLine()
+								+ System.getProperty("line.separator");
+						;
 					}
 					log2 = log2 + inFromServer.readLine();
 					log_msg = log2;
-					
+
 					System.out.println("Server: '" + read_msg + "'");
-					
+
 					socket.close();
-					
+
 					res = params[0];
 				} catch (UnknownHostException e) {
-					System.out.println("UnknownHostException");
-					if(params[0].equals("101")){
+					System.out.println("Client: UnknownHostException");
+					if (params[0].equals("101")) {
 						res = "101_Error";
 					} else {
 						res = "Error";
 					}
 				} catch (IOException e) {
-					System.out.println("IOException");
-					if(params[0].equals("101")){
+					System.out.println("Client: IOException");
+					if (params[0].equals("101")) {
 						res = "101_Error";
 					} else {
 						res = "Error";
@@ -590,9 +616,11 @@ public class Home extends Activity implements ActionBar.TabListener {
 			}
 
 			protected void onPostExecute(String result) {
-				if(!result.equals("101") && !result.equals("101_Error") && !result.equals("Error")){
+				if (!result.equals("101") && !result.equals("101_Error")
+						&& !result.equals("Error")) {
 					log2.setText(log_msg);
-				} 
+					showToast("Success");
+				}
 			}
 		}
 	}
