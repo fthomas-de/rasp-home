@@ -33,36 +33,36 @@
         android:src="@drawable/pfeil" />
 
     <ImageButton
-        android:id="@+id/dose2"
+        android:id="@+id/plug2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ipaddress"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="91dp"
         android:background="@drawable/stecker"
-        android:contentDescription="@string/dose2"
+        android:contentDescription="@string/plug2"
         android:src="@drawable/stecker" />
 
     <ImageButton
-        android:id="@+id/dose3"
+        android:id="@+id/plug3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/dose2"
+        android:layout_alignTop="@+id/plug2"
         android:layout_marginLeft="14dp"
-        android:layout_toRightOf="@+id/dose2"
+        android:layout_toRightOf="@+id/plug2"
         android:background="@drawable/stecker"
-        android:contentDescription="@string/dose3"
+        android:contentDescription="@string/plug3"
         android:src="@drawable/stecker" />
 
     <ImageButton
         android:id="@+id/plug1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/dose2"
+        android:layout_alignTop="@+id/plug2"
         android:layout_marginRight="13dp"
-        android:layout_toLeftOf="@+id/dose2"
+        android:layout_toLeftOf="@+id/plug2"
         android:background="@drawable/stecker"
-        android:contentDescription="@string/dose1"
+        android:contentDescription="@string/plug1"
         android:src="@drawable/stecker" />
 
     <ImageButton
@@ -98,8 +98,8 @@
         android:id="@+id/d2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/dose2"
-        android:layout_below="@+id/dose2"
+        android:layout_alignLeft="@+id/plug2"
+        android:layout_below="@+id/plug2"
         android:layout_marginLeft="7dp"
         android:text="@string/d2" />
 
@@ -107,8 +107,8 @@
         android:id="@+id/d3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/dose3"
-        android:layout_below="@+id/dose3"
+        android:layout_alignLeft="@+id/plug3"
+        android:layout_below="@+id/plug3"
         android:layout_marginLeft="7dp"
         android:text="@string/d3" />
 

@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -16,11 +18,13 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +50,8 @@ public class Home extends Activity implements ActionBar.TabListener {
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+	
+	private String id_hash;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +79,23 @@ public class Home extends Activity implements ActionBar.TabListener {
 			actionBar.addTab(actionBar.newTab()
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
+		}
+		
+		TelephonyManager tManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+		String id = tManager.getDeviceId();
+
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+			md.update(id.getBytes());
+			byte byteData[] = md.digest();
+			StringBuffer sb = new StringBuffer();
+	        for (int i = 0; i < byteData.length; i++) {
+	         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+	         id_hash = sb.toString();
+	        }
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -160,19 +183,19 @@ public class Home extends Activity implements ActionBar.TabListener {
 	 */
 	public static class HomeFragment extends Fragment {
 
-		private ImageButton dose1;
-		private ImageButton dose2;
-		private ImageButton dose3;
+		private static final String DEFAULT_ADDRESS = "mylilraspi.raspctl.com";
+		private static final int PORT = 1892;
+		
+		private ImageButton plug1;
+		private ImageButton plug2;
+		private ImageButton plug3;
 		private ImageButton set;
 		private ImageButton restart;
 		private ImageButton refresh;
 		private TextView status;
-		
-		private static final String DEFAULT_ADDRESS = "mylilraspi.raspctl.com";
 		private String address = "mylilraspi.raspctl.com";
-		private static final int port = 1892;
-		
 		private View rootView;
+		
 		/**
 		 * Returns a new instance of this fragment for the given section number.
 		 */
@@ -190,14 +213,14 @@ public class Home extends Activity implements ActionBar.TabListener {
 			rootView = inflater.inflate(R.layout.fragment_home, container,
 					false);
 			
-			dose1 = (ImageButton) rootView.findViewById(R.id.plug1);
-			dose1.setOnClickListener(dose1_handler);
+			plug1 = (ImageButton) rootView.findViewById(R.id.plug1);
+			plug1.setOnClickListener(plug1_handler);
 			
-			dose2 = (ImageButton) rootView.findViewById(R.id.dose2);
-			dose2.setOnClickListener(dose2_handler);
+			plug2 = (ImageButton) rootView.findViewById(R.id.plug2);
+			plug2.setOnClickListener(plug2_handler);
 			
-			dose3 = (ImageButton) rootView.findViewById(R.id.dose3);
-			dose3.setOnClickListener(dose3_handler);
+			plug3 = (ImageButton) rootView.findViewById(R.id.plug3);
+			plug3.setOnClickListener(plug3_handler);
 			
 			set = (ImageButton) rootView.findViewById(R.id.save_button);
 			set.setOnClickListener(set_handler);
@@ -213,7 +236,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			return rootView;
 		}
 		
-		View.OnClickListener dose1_handler = new View.OnClickListener() {
+		View.OnClickListener plug1_handler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				AsyncTaskRunner runner = new AsyncTaskRunner();
@@ -221,7 +244,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			}
 		};
 		
-		View.OnClickListener dose2_handler = new View.OnClickListener() {
+		View.OnClickListener plug2_handler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				AsyncTaskRunner runner = new AsyncTaskRunner();
@@ -229,7 +252,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			}
 		};
 		
-		View.OnClickListener dose3_handler = new View.OnClickListener() {
+		View.OnClickListener plug3_handler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				AsyncTaskRunner runner = new AsyncTaskRunner();
@@ -281,7 +304,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 					Socket socket;
 					socket = new Socket();
 					
-					SocketAddress sockaddr = new InetSocketAddress(address, port);
+					SocketAddress sockaddr = new InetSocketAddress(address, PORT);
 					
 					try{
 						socket.connect(sockaddr, 500);
@@ -295,9 +318,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			        
 					BufferedReader inFromServer = new BufferedReader(
 							new InputStreamReader(socket.getInputStream()));
-					if (inFromServer.equals("")) {
-						System.out.println("empty");
-					}
+
 					read_msg = inFromServer.readLine();
 
 					System.out.println("Server: '" + read_msg + "'");
@@ -343,11 +364,12 @@ public class Home extends Activity implements ActionBar.TabListener {
 	 */
 	public static class Log1Fragment extends Fragment {
 
+		private static final int LOGLEN = 25; 
+		private static final int PORT = 1892;
+		
 		private String address = "mylilraspi.raspctl.com";
-		private static final int port = 1892;
 		private TextView log1;
 		private String log_msg = "";
-		private final static int LOGLEN = 25; 
 		private ImageButton refreshLog1;
 		
 		/**
@@ -400,7 +422,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 					Socket socket;
 					socket = new Socket();
 					
-					SocketAddress sockaddr = new InetSocketAddress(address, port);
+					SocketAddress sockaddr = new InetSocketAddress(address, PORT);
 					
 					try{
 						socket.connect(sockaddr, 500);
@@ -414,10 +436,6 @@ public class Home extends Activity implements ActionBar.TabListener {
 			        
 					BufferedReader inFromServer = new BufferedReader(
 							new InputStreamReader(socket.getInputStream()));
-					if (inFromServer.equals("")) {
-						System.out.println("empty");
-					}
-					
 					
 					read_msg = inFromServer.readLine();
 					
@@ -465,11 +483,12 @@ public class Home extends Activity implements ActionBar.TabListener {
 	 */
 	public static class Log2Fragment extends Fragment {
 
+		private static final int PORT = 1892;
+		private final static int LOGLEN = 28;
+		
 		private String address = "mylilraspi.raspctl.com";
-		private static final int port = 1892;
 		private TextView log2;
 		private String log_msg = "";
-		private final static int LOGLEN = 28;
 		private ImageButton refreshLog2;
 		
 		/**
@@ -522,7 +541,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 					Socket socket;
 					socket = new Socket();
 					
-					SocketAddress sockaddr = new InetSocketAddress(address, port);
+					SocketAddress sockaddr = new InetSocketAddress(address, PORT);
 					
 					try{
 						socket.connect(sockaddr, 500);
@@ -536,10 +555,6 @@ public class Home extends Activity implements ActionBar.TabListener {
 			        
 					BufferedReader inFromServer = new BufferedReader(
 							new InputStreamReader(socket.getInputStream()));
-					if (inFromServer.equals("")) {
-						System.out.println("empty");
-					}
-					
 					
 					read_msg = inFromServer.readLine();
 					
