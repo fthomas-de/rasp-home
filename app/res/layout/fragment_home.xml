@@ -33,22 +33,11 @@
         android:src="@drawable/pfeil" />
 
     <ImageButton
-        android:id="@+id/plug2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ipaddress"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="91dp"
-        android:background="@drawable/stecker"
-        android:contentDescription="@string/plug2"
-        android:src="@drawable/stecker" />
-
-    <ImageButton
         android:id="@+id/plug3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/plug2"
-        android:layout_marginLeft="14dp"
+        android:layout_marginLeft="30dp"
         android:layout_toRightOf="@+id/plug2"
         android:background="@drawable/stecker"
         android:contentDescription="@string/plug3"
@@ -59,11 +48,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/plug2"
-        android:layout_marginRight="13dp"
+        android:layout_marginRight="30dp"
         android:layout_toLeftOf="@+id/plug2"
-        android:background="@drawable/stecker"
+        android:background="@null"
         android:contentDescription="@string/plug1"
-        android:src="@drawable/stecker" />
+        android:src="@drawable/lampe2" />
 
     <ImageButton
         android:id="@+id/restart"
@@ -86,33 +75,6 @@
         android:src="@drawable/refresh" />
 
     <TextView
-        android:id="@+id/d1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/plug1"
-        android:layout_below="@+id/plug1"
-        android:layout_marginLeft="7dp"
-        android:text="@string/d1" />
-
-    <TextView
-        android:id="@+id/d2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/plug2"
-        android:layout_below="@+id/plug2"
-        android:layout_marginLeft="7dp"
-        android:text="@string/d2" />
-
-    <TextView
-        android:id="@+id/d3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/plug3"
-        android:layout_below="@+id/plug3"
-        android:layout_marginLeft="7dp"
-        android:text="@string/d3" />
-
-    <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -120,13 +82,23 @@
         android:layout_below="@+id/ipaddress"
         android:text="@string/IPaddress" />
 
+    <ImageButton
+        android:id="@+id/plug2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@null"
+        android:contentDescription="@string/plug2"
+        android:src="@drawable/fan2" />
+
     <TextView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/restart"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="13dp"
         android:hint="@string/offline"
         android:text="@string/offline"
         android:textSize="20sp" />

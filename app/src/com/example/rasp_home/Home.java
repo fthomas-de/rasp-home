@@ -215,10 +215,10 @@ public class Home extends Activity implements ActionBar.TabListener {
 			rootView = inflater.inflate(R.layout.fragment_home, container,
 					false);
 
-			plug1 = (ImageButton) rootView.findViewById(R.id.plug1);
+			plug1 = (ImageButton) rootView.findViewById(R.id.plug1); //A1
 			plug1.setOnClickListener(plug1_handler);
 
-			plug2 = (ImageButton) rootView.findViewById(R.id.plug2);
+			plug2 = (ImageButton) rootView.findViewById(R.id.plug2); //B2
 			plug2.setOnClickListener(plug2_handler);
 
 			plug3 = (ImageButton) rootView.findViewById(R.id.plug3);

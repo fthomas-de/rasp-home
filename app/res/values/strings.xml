@@ -14,8 +14,8 @@
     <string name="refresh">refresh</string>
     <string name="offline">offline</string>
     <string name="restart">restart</string>
-    <string name="d1">plug1</string>
-    <string name="d2">plug2</string>
+    <string name="d1">A1</string>
+    <string name="d2">B2</string>
     <string name="d3">plug3</string>
     <string name="log1">Reboot</string>
     <string name="log2">Shutdown</string>
