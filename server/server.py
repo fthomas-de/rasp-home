@@ -2,34 +2,48 @@
 
 import socket
 import subprocess
+from config import device
 
 def main():
-	print 'Starting ...'
+
+	device = ''
+	
+#	with open('users', 'rb') as file:
+#		device = file.readline().rstrip().strip() #just one device allowed
+	
+	print '>' + device + '<\n'
+	
 	HOST = '192.168.0.111'
 	PORT = 1892
-	LOG1LEN = 30
+	LOG1LEN = 30 #send some more lines than needed
 	LOG2LEN = 30 
+
+	print 'Starting ...'
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 	s.bind((HOST, PORT))
 	s.listen(2)
 	data = ''
-	print 'Listening...'
+
 	state_1 = False
 	state_2 = False
 	state_3 = False
-	
+
+	print 'Listening...\n'
 	while True:
 		answer = ""
 		conn, addr = s.accept()
-		print 'Connected by', addr
+		print 'Connected by:', addr
 		while True:
-		    	data = conn.recv(16)
+		    	data = conn.recv(512)
     			if not data: break			
 			answer = data.rstrip()
 	    		print 'Incoming: ' + answer	
 			break 
-			
+		if answer[3:] != device: 
+			break
+		answer = answer[:3]
+		
 		if answer == '000':
 			if not state_1:
 				command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/send m 4 1 1' #A1 = m 4 1 _
@@ -46,11 +60,11 @@ def main():
 			
 		elif answer == '001':
 			if not state_2:
-                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/send n 4 1 1' #B1 = n 4 1 _
+                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/send n 4 2 1' #B2 = n 4 1 _
                                 print 'Dose 2 an'
                                 state_2 = not state_2
                         else:
-                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/send n 4 1 0' #B1 = n 4 1 _
+                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/send n 4 2 0' #B2 = n 4 1 _
                                 print 'Dose 2 an'
                                 state_2 = not state_2
 
