@@ -2,15 +2,11 @@
 
 import socket
 import subprocess
-from config import device
+import users
 
 def main():
-
-	device = ''
 	
-#	with open('users', 'rb') as file:
-#		device = file.readline().rstrip().strip() #just one device allowed
-	
+	device = users.device
 	print '>' + device + '<\n'
 	
 	HOST = '192.168.0.111'
