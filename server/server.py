@@ -42,11 +42,11 @@ def main():
 		
 		if answer == '000':
 			if not state_1:
-				command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/send m 4 1 1' #A1 = m 4 1 _
+				command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send m 4 1 1' #A1 = m 4 1 _
 				print 'Dose 1 an'	
 				state_1 = not state_1
 			else:
-				command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/send m 4 1 0' #A1 = m 4 1 _
+				command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send m 4 1 0' #A1 = m 4 1 _
 				print 'Dose 1 an'
 				state_1 = not state_1
 
@@ -56,11 +56,11 @@ def main():
 			
 		elif answer == '001':
 			if not state_2:
-                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/send n 4 2 1' #B2 = n 4 1 _
+                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send n 4 2 1' #B2 = n 4 1 _
                                 print 'Dose 2 an'
                                 state_2 = not state_2
                         else:
-                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/send n 4 2 0' #B2 = n 4 1 _
+                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send n 4 2 0' #B2 = n 4 1 _
                                 print 'Dose 2 an'
                                 state_2 = not state_2
 
@@ -70,11 +70,11 @@ def main():
 
 		elif answer == '010':
 			if not state_3:
-                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/send o 4 1 1' #C1 = o 4 1 _
+                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send o 4 1 1' #C1 = o 4 1 _
                                 print 'Dose 3 an'
                                 state_3 = not state_3
                         else:
-                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/send o 4 1 0' #C1 = o 4 1 _
+                                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send o 4 1 0' #C1 = o 4 1 _
                                 print 'Dose 3 an'
                                 state_3 = not state_3
 
