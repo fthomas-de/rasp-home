@@ -4,4 +4,17 @@
 	<h2>Welcome to the control page!</h2>
 	<p>Lorem ipsum bla ad absurdum</p>
 </div>
+<div2>
+	<form action="{{ url_for('control') }}" method=post>
+	{{ form.hidden_tag() }}
+
+	{{ form.ip.label }}
+	{{ form.ip }}
+
+	{{ form.submit }}
+</div2>
+<br>
+<div3>
+	<img src="{{ url_for('static', filename='lampe.png') }}">
+</div3>
 {% endblock %}
