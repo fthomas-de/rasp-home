@@ -33,17 +33,6 @@
         android:src="@drawable/pfeil" />
 
     <ImageButton
-        android:id="@+id/plug3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/plug2"
-        android:layout_marginLeft="30dp"
-        android:layout_toRightOf="@+id/plug2"
-        android:background="@drawable/stecker"
-        android:contentDescription="@string/plug3"
-        android:src="@drawable/stecker" />
-
-    <ImageButton
         android:id="@+id/plug1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

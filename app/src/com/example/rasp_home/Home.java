@@ -13,16 +13,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
@@ -188,15 +188,13 @@ public class Home extends Activity implements ActionBar.TabListener {
 		private static final String DEFAULT_ADDRESS = "mylilraspi.raspctl.com";
 		private static final int PORT = 1892;
 
-		private ImageButton plug1;
-		private ImageButton plug2;
-		private ImageButton plug3;
-		private ImageButton set;
-		private ImageButton restart;
-		private ImageButton refresh;
+		private ImageButton plug1, plug2;
+		private ImageButton set, restart, refresh;
 		private TextView status;
 		private String address = "mylilraspi.raspctl.com";
 		private View rootView;
+		private Boolean plug1_status = false;
+		private Boolean plug2_status = false;
 
 		/**
 		 * Returns a new instance of this fragment for the given section number.
@@ -221,9 +219,6 @@ public class Home extends Activity implements ActionBar.TabListener {
 			plug2 = (ImageButton) rootView.findViewById(R.id.plug2); //B2
 			plug2.setOnClickListener(plug2_handler);
 
-			plug3 = (ImageButton) rootView.findViewById(R.id.plug3);
-			plug3.setOnClickListener(plug3_handler);
-
 			set = (ImageButton) rootView.findViewById(R.id.save_button);
 			set.setOnClickListener(set_handler);
 
@@ -235,13 +230,19 @@ public class Home extends Activity implements ActionBar.TabListener {
 
 			status = (TextView) rootView.findViewById(R.id.status);
 
+			AsyncTaskRunner runner1 = new AsyncTaskRunner();
+			runner1.execute("GETAS1");
+			
+			AsyncTaskRunner runner2 = new AsyncTaskRunner();
+			runner2.execute("GETBS2");
+			
 			return rootView;
 		}
 		
 		@Override
 		public void onResume() {
 			AsyncTaskRunner runner = new AsyncTaskRunner();
-			runner.execute("101");
+			runner.execute("GET101");
 			super.onResume();
 		}
 
@@ -249,7 +250,13 @@ public class Home extends Activity implements ActionBar.TabListener {
 			@Override
 			public void onClick(View v) {
 				AsyncTaskRunner runner = new AsyncTaskRunner();
-				runner.execute("000");
+				if(plug1_status){
+					runner.execute("SETA10");
+					plug1_status = false;
+				} else {
+					runner.execute("SETA11");
+					plug1_status = true;
+				}
 			}
 		};
 
@@ -257,15 +264,13 @@ public class Home extends Activity implements ActionBar.TabListener {
 			@Override
 			public void onClick(View v) {
 				AsyncTaskRunner runner = new AsyncTaskRunner();
-				runner.execute("001");
-			}
-		};
-
-		View.OnClickListener plug3_handler = new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				AsyncTaskRunner runner = new AsyncTaskRunner();
-				runner.execute("010");
+				if(plug2_status){
+					runner.execute("SETB20");
+					plug2_status = false;
+				} else {
+					runner.execute("SETB21");
+					plug2_status = true;
+				}
 			}
 		};
 
@@ -287,7 +292,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			@Override
 			public void onClick(View v) {
 				AsyncTaskRunner runner = new AsyncTaskRunner();
-				runner.execute("101");
+				runner.execute("GET101");
 			}
 		};
 
@@ -295,7 +300,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			@Override
 			public void onClick(View v) {
 				AsyncTaskRunner runner = new AsyncTaskRunner();
-				runner.execute("111");
+				runner.execute("SETrst");
 			}
 		};
 
@@ -335,36 +340,35 @@ public class Home extends Activity implements ActionBar.TabListener {
 
 					socket.close();
 
-					res = params[0];
+					res = read_msg;
+					
 				} catch (UnknownHostException e) {
 					System.out.println("Client: UnknownHostException");
-					if (params[0].equals("101")) {
-						res = "101_Error";
-					} else {
-						res = "Error";
-					}
+					res = "HostError";
+					
 				} catch (IOException e) {
 					System.out.println("Client: IOException");
-					if (params[0].equals("101")) {
-						res = "101_Error";
-					} else {
-						res = "Error";
-					}
+					res = "IOError";
+
 				}
 				return res;
 			}
 
 			protected void onPostExecute(String result) {
-				if (!result.equals("101") && !result.equals("101_Error")
-						&& !result.equals("Error")) {
-					showToast("Success");
+				if (result.equals("Cookies")) {
+					status.setText(getString(R.string.online));
+				} else if(result.equals("A10")){
+					plug1_status = false;
+				} else if(result.equals("A11")){
+					plug1_status = true;
+				} else if(result.equals("B20")) {
+					plug2_status = false;
+				} else if(result.equals("B21")){
+					plug2_status = true;
 				} else {
-					if (result.equals("101_Error") || result.equals("Error")) {
-						status.setText("offline");
-					} else {
-						status.setText("online");
-					}
+					status.setText(getString(R.string.offline));
 				}
+				
 			}
 		}
 	}
@@ -405,7 +409,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			refreshLog1.setOnClickListener(refreshLog1_handler);
 
 			AsyncTaskRunner runner = new AsyncTaskRunner();
-			runner.execute("100");
+			runner.execute("GETlg1");
 			return rootView;
 		}
 
@@ -418,7 +422,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			@Override
 			public void onClick(View v) {
 				AsyncTaskRunner runner = new AsyncTaskRunner();
-				runner.execute("100");
+				runner.execute("GETlg1");
 			}
 		};
 
@@ -469,29 +473,23 @@ public class Home extends Activity implements ActionBar.TabListener {
 					socket.close();
 
 					res = params[0];
+					
 				} catch (UnknownHostException e) {
 					System.out.println("Client: UnknownHostException");
-					if (params[0].equals("101")) {
-						res = "101_Error";
-					} else {
-						res = "Error";
-					}
+					res = "HostError";
+					
 				} catch (IOException e) {
 					System.out.println("Client: IOException");
-					if (params[0].equals("101")) {
-						res = "101_Error";
-					} else {
-						res = "Error";
-					}
+					res = "IOError";
+					
 				}
 				return res;
 			}
 
 			protected void onPostExecute(String result) {
-				if (!result.equals("101") && !result.equals("101_Error")
-						&& !result.equals("Error")) {
+				if (!result.equals("Cookies") && !result.equals("HostError")
+						&& !result.equals("IOError")) {
 					log1.setText(log_msg);
-					showToast("Success");
 				}
 			}
 		}
@@ -533,7 +531,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			refreshLog2.setOnClickListener(refreshLog2_handler);
 
 			AsyncTaskRunner runner = new AsyncTaskRunner();
-			runner.execute("110");
+			runner.execute("GETlg2");
 			return rootView;
 		}
 
@@ -546,7 +544,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			@Override
 			public void onClick(View v) {
 				AsyncTaskRunner runner = new AsyncTaskRunner();
-				runner.execute("110");
+				runner.execute("GETlg2");
 			}
 		};
 		
@@ -597,29 +595,23 @@ public class Home extends Activity implements ActionBar.TabListener {
 					socket.close();
 
 					res = params[0];
+					
 				} catch (UnknownHostException e) {
 					System.out.println("Client: UnknownHostException");
-					if (params[0].equals("101")) {
-						res = "101_Error";
-					} else {
-						res = "Error";
-					}
+					res = "HostError";
+					
 				} catch (IOException e) {
 					System.out.println("Client: IOException");
-					if (params[0].equals("101")) {
-						res = "101_Error";
-					} else {
-						res = "Error";
-					}
+					res = "IOError";
+					
 				}
 				return res;
 			}
 
 			protected void onPostExecute(String result) {
-				if (!result.equals("101") && !result.equals("101_Error")
-						&& !result.equals("Error")) {
+				if (!result.equals("Cookies") && !result.equals("HostError")
+						&& !result.equals("IOError")) {
 					log2.setText(log_msg);
-					showToast("Success");
 				}
 			}
 		}
