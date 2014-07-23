@@ -300,7 +300,7 @@ public class Home extends Activity implements ActionBar.TabListener {
 			@Override
 			public void onClick(View v) {
 				AsyncTaskRunner runner = new AsyncTaskRunner();
-				runner.execute("SETrst");
+				runner.execute("GETrst");
 			}
 		};
 
