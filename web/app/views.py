@@ -25,6 +25,15 @@ def home():
 def control():
 	if request.method == 'POST':
 		return 'Form posted'
+
 	elif request.method == 'GET':
 		form = Ipaddress()
-		return render_template('control.html', form=form)
+		return render_template('control.html')
+
+@app.route('/a1on')
+@auth.login_required
+def a1on():
+	import subprocess
+	command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-hhome/server/send m 4 1 0'
+	process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+	return render_template('control.html')

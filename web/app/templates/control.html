@@ -1,20 +1,24 @@
 {% extends "template.html" %}
 {% block content %}
 <div>
-	<h2>Welcome to the control page!</h2>
-	<p>Lorem ipsum bla ad absurdum</p>
+	<h1>Controlcenter</h1>
 </div>
-<div2>
-	<form action="{{ url_for('control') }}" method=post>
-	{{ form.hidden_tag() }}
-
-	{{ form.ip.label }}
-	{{ form.ip }}
-
-	{{ form.submit }}
-</div2>
 <br>
-<div3>
-	<img src="{{ url_for('static', filename='lampe.png') }}">
-</div3>
+<div class="lampe1">
+	<a href="/a1on">
+	<img src="{{ url_for('static', filename='lampe.png') }}"
+		border="0"
+		alt="lampe1"
+		title="Lampe 1"
+	></a>
+</div>
+<div class="flaskimg">
+	<a href="http://flask.pocoo.org/">
+		<img src="http://flask.pocoo.org/static/badges/flask-powered.png"
+   			border="0"
+   			alt="Flask powered"
+   			title="Flask powered"
+		>
+	</a>
+</div>
 {% endblock %}
