@@ -20,7 +20,7 @@ def get_pw(username):
 @app.route('/index')
 @auth.login_required
 def home():
-	return render_template('index.html')
+	return render_template('index.html', title='Welcome')
 
 @app.route('/control')
 @auth.login_required
