@@ -20,7 +20,7 @@ def get_pw(username):
 @app.route('/index')
 @auth.login_required
 def home():
-	return render_template('index.html', title='Welcome')
+	return render_template('index.html', page='index')
 
 @app.route('/control')
 @auth.login_required
@@ -30,7 +30,12 @@ def control():
 
 	elif request.method == 'GET':
 		form = Ipaddress()
-		return render_template('control.html')
+		return render_template('control.html', page='control')
+
+@app.route('/contact')
+@auth.login_required
+def contact():
+	return render_template('contact.html', page='contact')
 
 @app.route('/a1on')
 @auth.login_required
