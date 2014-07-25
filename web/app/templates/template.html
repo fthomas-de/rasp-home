@@ -2,13 +2,24 @@
 <html>
 <head>
 	<title>Raspberry Pi</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" media="screen"/>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css" media="screen"/>
 </head>
-<link rel="shortcut icon" href="{{ url_for('static', filename='rasp-home-icon.ico') }}">
+<link rel="shortcut icon" href="{{ url_for('static', filename='img/rasp-home-icon.ico') }}">
 <body>
 <div class='container'>
 	{% block content %}
 	{% endblock %}
 </div>
+
+<div class="flaskimg">
+        <a href="http://flask.pocoo.org/">
+                <img src="http://flask.pocoo.org/static/badges/flask-powered.png"
+                        border="0"
+                        alt="Flask powered"
+                        title="Flask powered"
+                >
+        </a>
+</div>
+
 </body>
 </html>

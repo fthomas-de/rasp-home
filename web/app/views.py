@@ -1,12 +1,14 @@
-from flask import Flask, render_template, url_for, request 
+from flask import Flask, render_template, url_for, request, redirect 
 from flask.ext.httpauth import HTTPBasicAuth
 from app import app
 from users import users
 from forms import Ipaddress
+import subprocess
 
 (user, passwd) = users
 userlist = {user : passwd}
 auth = HTTPBasicAuth()
+states = { 'a1' : False, 'b2' : False  }
 
 @auth.get_password
 def get_pw(username):
@@ -33,7 +35,13 @@ def control():
 @app.route('/a1on')
 @auth.login_required
 def a1on():
-	import subprocess
-	command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-hhome/server/send m 4 1 0'
-	process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-	return render_template('control.html')
+	if states['a1']:
+		command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send m 4 1 0'
+		process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+		states['a1'] = False
+	else:
+		command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send m 4 1 1'
+                process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+		states['a1'] = True
+
+	return redirect('/control', code=302)
