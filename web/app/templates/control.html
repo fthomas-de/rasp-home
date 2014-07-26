@@ -1,15 +1,28 @@
 {% extends "template.html" %}
 {% block content %}
 <div>
-	<h1>Controlcenter</h1><hr>	
-</div>
-<br>
-<div class="lampe1">
-	<a href="/a1on">
-	<img src="{{ url_for('static', filename='img/lampe.png') }}"
-		border="0"
-		alt="lampe1"
-		title="Lampe 1"
-	></a>
+
+ <div class="page-header">
+ 	<h1>Controlcenter</h1>	
+ </div><br>
+
+ <div class="container">
+  <div class="row row-centered">
+
+   <div class="col-xs-6 col-centered">
+     <a href="/a1on" class="thumbnail">
+       <img src="static/img/lampe.png" alt="lamp1", title="lamp1">
+     </a>
+   </div>
+
+   <div class="col-xs-6 col-centered">
+     <a href="/b2on" class="thumbnail">
+       <img src="static/img/vent.png" alt="vent", title="vent">
+     </a>
+   </div> 
+
+  </div> <!-- row -->
+ </div> <!-- container -->
+<hr>
 </div>
 {% endblock %}
