@@ -26,7 +26,8 @@ $RECYCLE.BIN/
 .LSOverride
 
 # Icon must ends with two \r.
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -36,3 +37,4 @@ Icon
 .Trashes
 
 bin/background_mate/Users.class
+src\raspi_desktop/Users.java
