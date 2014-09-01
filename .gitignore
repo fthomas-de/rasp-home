@@ -218,3 +218,4 @@ pip-log.txt
 .mr.developer.cfg
 app/gen/com/example/rasp_home/R.java
 app/gen/com/example/rasp_home/R.java
+desktop/src/raspi_desktop/Users.java
