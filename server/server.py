@@ -13,8 +13,8 @@ def main():
 	LOG1LEN = 30 #currently sending some more lines than needed
 	LOG2LEN = 30 
 	
-	a1 = False
-	b2 = False
+	a1 = False #device on or off
+	b2 = False # ...
 
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -22,17 +22,21 @@ def main():
 	s.listen(2)
 	data = ''
 	
-	print 'Listening ...'
 	while True:
 		#answer = 'cmd' + 'val' + 'hash'
 		#length =  3    +  3    +  64
 		cmd, val, hash = None, None, None
 
-		conn, _ = s.accept()		
+		conn, _ = s.accept()
 		while True:
 			data = conn.recv(512)
 			data = data.rstrip()
-			if not data or len(data) != 70: break
+			if not data or len(data) != 70: 
+				print "data:", data
+				print "wrong LEN"
+				conn.close()
+				break
+					
 			cmd = data[:3]
 			val = data[3:6]
 			hash = data[6:]
@@ -40,8 +44,11 @@ def main():
 			data = 'Success'		
 			break 
 
-		if hash != device: break
-		
+		if hash != device: 
+			print "wrong ID"
+			conn.close()
+			continue
+
 		if cmd == 'SET':
 			if val == 'A11':
 				command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send m 4 1 1' #A1 = m 4 1 _

@@ -49,7 +49,10 @@ def control():
 
 	elif request.method == 'GET':
 		form = Ipaddress()
-		return render_template('control.html', page='control')
+		return render_template('control.html', 
+			page='control', 
+			a1=str(states['a1']), 
+			b2=str(states['b2']))
 
 @app.route('/contact')
 @auth.login_required
@@ -84,6 +87,9 @@ def b2on():
 
         return redirect('/control', code=302)
 
-
-
-
+@app.route('/shutdown')
+@auth.login_required
+def shutdown():
+        command = '/usr/bin/sudo /sbin/shutdown -r now'
+	process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+	return redirect('/control')
