@@ -62,29 +62,33 @@ def contact():
 @app.route('/a1on')
 @auth.login_required
 def a1on():
-	if not states['a1']:
-		command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send m 4 1 0'
-		process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-		states['a1'] = True
-	else:
-		command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send m 4 1 1'
-                process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-		states['a1'] = False
+	command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send m 4 1 1'
+	process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+	states['a1'] = True
+	return redirect('/control', code=302)
 
+@app.route('/a1off')
+@auth.login_required
+def a1off():
+	command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send m 4 1 0'
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        states['a1'] = False
 	return redirect('/control', code=302)
 
 @app.route('/b2on')
 @auth.login_required
 def b2on():
-        if not states['b2']:
-                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send n 4 2 0'
-                process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-                states['b2'] = True
-        else:
-                command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send n 4 2 1'
-                process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-                states['b2'] = False
+	command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send n 4 2 1'
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        states['b2'] = True
+	return redirect('/control', code=302)
 
+@app.route('/b2off')
+@auth.login_required
+def b2off():
+        command = '/usr/bin/sudo /home/fthomas/Dokumente/rasp-home/server/send n 4 2 0'
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        states['b2'] = False
         return redirect('/control', code=302)
 
 @app.route('/shutdown')
