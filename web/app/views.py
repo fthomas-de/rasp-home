@@ -11,23 +11,28 @@ userlist = {user : passwd}
 auth = HTTPBasicAuth()
 states = { 'a1' : False, 'b2' : False  }
 
-cs_a1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-cs_a1.connect(('192.168.0.111', 1892))
-cs_a1.send('GETAS198273e924684c71c4c56d654fd01ae3bc714a18f50530f0992999bdb9c031992')
-a1 = cs_a1.recv(64)
-cs_a1.close()
+try:
+	cs_a1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	cs_a1.connect(('mylilraspi.raspctl.com', 1892))
+	cs_a1.send('GETAS198273e924684c71c4c56d654fd01ae3bc714a18f50530f0992999bdb9c031992')
+	a1 = cs_a1.recv(64)
+	cs_a1.close()
+	a1 = str(a1)
+	states['a1'] = str(a1)
 
-cs_b2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-cs_b2.connect(('192.168.0.111', 1892))
-cs_b2.send('GETAS198273e924684c71c4c56d654fd01ae3bc714a18f50530f0992999bdb9c031992')
-b2 = cs_b2.recv(64)
-cs_b2.close()
+except:
+	print 'error'
 
-a1 = str(a1)
-b2 = str(b2)
-
-states['a1'] = str(a1)
-states['b2'] = str(b2)
+try:
+	cs_b2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	cs_b2.connect(('mylilraspi.raspctl.com', 1892))
+	cs_b2.send('GETAS198273e924684c71c4c56d654fd01ae3bc714a18f50530f0992999bdb9c031992')
+	b2 = cs_b2.recv(64)
+	cs_b2.close()
+	b2 = str(b2)
+	states['b2'] = str(b2)
+except:
+	print 'error'
 
 @auth.get_password
 def get_pw(username):
